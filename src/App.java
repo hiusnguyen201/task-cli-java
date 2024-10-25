@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.google.gson.JsonArray;
@@ -5,6 +6,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import controllers.TaskController;
+import models.Command;
+import models.Task;
 import utils.Logger;
 
 public class App {
@@ -17,6 +20,7 @@ public class App {
         do {
             System.out.println("\n===== Welcome to Task List =====");
             logger.info("Command start with \"task-cli <command>\"");
+            logger.info("Help: \"task-cli --help\"");
             String cli = scanner.nextLine();
             String[] arrCli = cli.trim().split(" ");
 
@@ -26,6 +30,9 @@ public class App {
             }
 
             switch (arrCli[1]) {
+                case "--help":
+                    printHelp();
+                    break;
                 case "add":
                     handleAddTask(cli);
                     break;
@@ -115,6 +122,31 @@ public class App {
         }
 
         System.out.format("+---------------+----------------------+---------------+%n");
+    }
+
+    public static void printHelp() {
+        String leftAlignFormat = "| %-20s | %-40s |%n";
+        System.out.format("+----------------------+------------------------------------------+%n");
+        System.out.format("| Command              | Description                              |%n");
+        System.out.format("+----------------------+------------------------------------------+%n");
+
+        ArrayList<Command> commands = new ArrayList<Command>();
+        commands.add(new Command("add", "Add new task"));
+        commands.add(new Command("update", "Update info task"));
+        commands.add(new Command("delete", "Delete task"));
+        commands.add(new Command("list", "Print list task"));
+        commands.add(new Command("list todo", "Print list task with status todo"));
+        commands.add(new Command("list in-progress", "Print list task with status in-progress"));
+        commands.add(new Command("list done", "Print list task with status done"));
+        commands.add(new Command("mark-todo", "Mark task have status todo"));
+        commands.add(new Command("mark-in-progress", "Mark task have status in-progress"));
+        commands.add(new Command("mark-done", "Mark task have status done"));
+
+        for (Command item : commands) {
+            System.out.format(leftAlignFormat, item.name, item.desc);
+        }
+
+        System.out.format("+----------------------+------------------------------------------+%n");
     }
 
     public static void clearScreen() {
