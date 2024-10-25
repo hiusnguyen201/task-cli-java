@@ -1,15 +1,21 @@
 package controllers;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.FileReader;
+
+import models.Task;
+import utils.Logger;
 
 public class TaskController {
-    final String FILE_PATH = "./task-cli.json";
+    private Task task = new Task();
+    private Logger logger = new Logger();
 
-    public void addTask(String str) throws IOException {
-        // new File(FILE_PATH).createNewFile();
-        // FileReader reader = new FileReader(FILE_PATH);
-        // JsonReader jsonReader = Json.createReader(...);
+    public void addTask(String title) {
+        try {
+            task.add(title);
+            logger.success("Add task successful\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.error("Add task unsuccessful\n");
+        }
     }
 }

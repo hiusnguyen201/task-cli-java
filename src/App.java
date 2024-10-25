@@ -1,13 +1,8 @@
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
+import controllers.TaskController;
 import utils.Logger;
 
 public class App {
@@ -17,26 +12,26 @@ public class App {
 
         Scanner scanner = new Scanner(System.in);
         Logger logger = new Logger();
-
-        try (FileReader reader = new FileReader("src/database/data.json")) {
-            JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
-            JsonArray tasksJsonArray = jsonObject.getAsJsonArray("tasks");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        RegexPattern regexPattern = new RegexPattern();
+        TaskController taskController = new TaskController();
 
         do {
             System.out.println("===== Task List =====");
             String cli = scanner.nextLine();
-            String[] arrCli = cli.split(" ");
+            String[] arrCli = cli.trim().split(" ");
 
-            if (arrCli[0] != "task-cli") {
-                logger.error("Invalid command. Command start with \"task-cli\"\n");
+            if (!arrCli[0].equals("task-cli") || arrCli.length < 2) {
+                logger.error("Invalid command. Command start with \"task-cli <command>\"\n");
                 continue;
             }
 
             switch (arrCli[1]) {
                 case "add":
+                    int firstQuoteIndex = cli.indexOf("\"");
+                    int secondQuoteIndex = cli.indexOf("\"", firstQuoteIndex + 1);
+                    String title = cli.substring(firstQuoteIndex + 1, secondQuoteIndex);
+
+                    taskController.addTask(title);
                     break;
                 case "delete":
                     break;
