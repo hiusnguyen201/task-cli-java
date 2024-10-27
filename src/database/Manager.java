@@ -15,7 +15,7 @@ public class Manager<T> {
     private String filePath;
     private List<T> data;
 
-    public Manager(String table, String filePath, Class type) {
+    public Manager(String table, String filePath, Class<T> type) {
         this.table = table;
         this.filePath = filePath;
         try {

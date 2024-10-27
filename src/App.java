@@ -18,7 +18,10 @@ public class App {
             System.out.println("\n===== Welcome to Task List =====");
             Logger.info("Command start with \"task-cli <command>\"");
             Logger.info("Help: \"task-cli --help\"");
+            Logger.info("Exit: \"task-cli --exit\"\n");
             String cli = scanner.nextLine();
+            System.err.println();
+
             String[] arrCli = cli.trim().split(" ");
 
             if (!arrCli[0].equals("task-cli") || arrCli.length < 2) {
@@ -69,11 +72,15 @@ public class App {
                 case "mark-done":
                     app.handleUpdateStatus(arrCli[2], "done");
                     break;
+                case "--exit":
+                    System.out.println("===== Bye =====");
+                    scanner.close();
+                    System.exit(1);
+                    break;
                 default:
                     Logger.error("Invalid command. Command not found");
                     break;
             }
-
         } while (true);
     }
 
