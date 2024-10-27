@@ -2,7 +2,7 @@ package models;
 
 import com.google.gson.JsonObject;
 
-public class Task extends Model {
+public class Task {
     private String id;
     private String title;
     private String status;
@@ -37,14 +37,5 @@ public class Task extends Model {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    @Override
-    public JsonObject convertToJsonObject() {
-        JsonObject item = new JsonObject();
-        item.addProperty("id", this.id);
-        item.addProperty("title", this.title);
-        item.addProperty("status", this.status);
-        return item;
     }
 }
