@@ -8,9 +8,12 @@ import models.Task;
 import utils.Logger;
 
 public class App {
+    private TaskController taskController = new TaskController();
+
     public static void main(String[] args) throws Exception {
         clearScreen();
         Scanner scanner = new Scanner(System.in);
+        App app = new App();
         do {
             System.out.println("\n===== Welcome to Task List =====");
             Logger.info("Command start with \"task-cli <command>\"");
@@ -28,43 +31,43 @@ public class App {
                     printHelp();
                     break;
                 case "add":
-                    handleAddTask(cli);
+                    app.handleAddTask(cli);
                     break;
                 case "delete":
-                    handleDeleteTask(arrCli[2]);
+                    app.handleDeleteTask(arrCli[2]);
                     break;
                 case "update":
-                    handleUpdateTask(arrCli[2], cli);
+                    app.handleUpdateTask(arrCli[2], cli);
                     break;
                 case "list":
                     if (arrCli.length < 3) {
-                        printAllTask(null);
+                        app.printAllTask(null);
                     } else {
                         switch (arrCli[2]) {
                             case "todo":
-                                printAllTask("todo");
+                                app.printAllTask("todo");
                                 break;
                             case "in-progress":
-                                printAllTask("in-progress");
+                                app.printAllTask("in-progress");
                                 break;
                             case "done":
-                                printAllTask("done");
+                                app.printAllTask("done");
                                 break;
                             default:
-                                printAllTask(null);
+                                app.printAllTask(null);
                                 break;
                         }
                     }
 
                     break;
                 case "mark-todo":
-                    handleUpdateStatus(arrCli[2], "todo");
+                    app.handleUpdateStatus(arrCli[2], "todo");
                     break;
                 case "mark-in-progress":
-                    handleUpdateStatus(arrCli[2], "in-progress");
+                    app.handleUpdateStatus(arrCli[2], "in-progress");
                     break;
                 case "mark-done":
-                    handleUpdateStatus(arrCli[2], "done");
+                    app.handleUpdateStatus(arrCli[2], "done");
                     break;
                 default:
                     Logger.error("Invalid command. Command not found");
@@ -74,34 +77,34 @@ public class App {
         } while (true);
     }
 
-    public static void handleAddTask(String cli) {
+    public void handleAddTask(String cli) {
         int firstQuoteIndex = cli.indexOf("\"");
         int secondQuoteIndex = cli.indexOf("\"", firstQuoteIndex + 1);
         String title = cli.substring(firstQuoteIndex + 1, secondQuoteIndex);
-        TaskController.addTask(title);
+        this.taskController.addTask(title);
     }
 
-    public static void handleUpdateTask(String id, String cli) {
+    public void handleUpdateTask(String id, String cli) {
         int firstQuoteIndex = cli.indexOf("\"");
         int secondQuoteIndex = cli.indexOf("\"", firstQuoteIndex + 1);
         String title = cli.substring(firstQuoteIndex + 1, secondQuoteIndex);
-        TaskController.updateTask(id, title);
+        this.taskController.updateTask(id, title);
     }
 
-    public static void handleDeleteTask(String id) {
-        TaskController.deleteTask(id);
+    public void handleDeleteTask(String id) {
+        this.taskController.deleteTask(id);
     }
 
-    public static void handleUpdateStatus(String id, String status) {
-        TaskController.updateStatus(id, status);
+    public void handleUpdateStatus(String id, String status) {
+        this.taskController.updateStatus(id, status);
     }
 
-    public static void printAllTask(String status) {
+    public void printAllTask(String status) {
         List<Task> data = new ArrayList<Task>();
         if (status == null || status.isEmpty()) {
-            data = TaskController.getTasks(null);
+            data = this.taskController.getTasks(null);
         } else {
-            data = TaskController.getTasks(status);
+            data = this.taskController.getTasks(status);
         }
 
         String leftAlignFormat = "| %-13s | %-20s | %-13s |%n";

@@ -8,10 +8,11 @@ import models.Task;
 import utils.Logger;
 
 public class TaskController {
+    private TaskManager taskManager = new TaskManager();
 
-    public static void addTask(String title) {
+    public void addTask(String title) {
         try {
-            TaskManager.create(title, "todo");
+            this.taskManager.create(title, "todo");
             Logger.success("Add task successful");
         } catch (Exception e) {
             e.printStackTrace();
@@ -19,10 +20,10 @@ public class TaskController {
         }
     }
 
-    public static List<Task> getTasks(String status) {
+    public List<Task> getTasks(String status) {
         try {
             Logger.success("Get all tasks successful");
-            return TaskManager.findAll(status);
+            return this.taskManager.findAll(status);
         } catch (Exception e) {
             e.printStackTrace();
             Logger.error("Get all tasks unsuccessful");
@@ -30,9 +31,9 @@ public class TaskController {
         }
     }
 
-    public static void updateTask(String id, String title) {
+    public void updateTask(String id, String title) {
         try {
-            TaskManager.update(id, title, null);
+            this.taskManager.update(id, title, null);
             Logger.success("Update task successful");
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,9 +41,9 @@ public class TaskController {
         }
     }
 
-    public static void updateStatus(String id, String status) {
+    public void updateStatus(String id, String status) {
         try {
-            TaskManager.update(id, null, status);
+            this.taskManager.update(id, null, status);
             Logger.success("Update status task successful");
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,9 +51,9 @@ public class TaskController {
         }
     }
 
-    public static void deleteTask(String id) {
+    public void deleteTask(String id) {
         try {
-            TaskManager.delete(id);
+            this.taskManager.delete(id);
             Logger.success("Delete task successful");
         } catch (Exception e) {
             e.printStackTrace();
