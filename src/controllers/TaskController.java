@@ -1,75 +1,62 @@
 package controllers;
 
-import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
 
-import com.google.gson.JsonArray;
-
+import database.TaskManager;
 import models.Task;
 import utils.Logger;
 
 public class TaskController {
-    private Task task = new Task();
-    private Logger logger = new Logger();
 
-    public void addTask(String title) {
+    public static void addTask(String title) {
         try {
-            task.add(title);
-            logger.success("Add task successful");
-        } catch (IOException e) {
+            TaskManager.create(title, "todo");
+            Logger.success("Add task successful");
+        } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Add task unsuccessful");
+            Logger.error("Add task unsuccessful");
         }
     }
 
-    public JsonArray getTasks() {
+    public static List<Task> getTasks(String status) {
         try {
-            logger.success("Get all tasks successful");
-            return task.getAll();
-        } catch (IOException e) {
+            Logger.success("Get all tasks successful");
+            return TaskManager.findAll(status);
+        } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Get all tasks unsuccessful");
-            return new JsonArray();
+            Logger.error("Get all tasks unsuccessful");
+            return new ArrayList<Task>();
         }
     }
 
-    public JsonArray getTasksByStatus(String status) {
+    public static void updateTask(String id, String title) {
         try {
-            logger.success("Get all tasks successful");
-            return task.getAllByStatus(status);
-        } catch (IOException e) {
+            TaskManager.update(id, title, null);
+            Logger.success("Update task successful");
+        } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Get all tasks unsuccessful");
-            return new JsonArray();
+            Logger.error("Update task unsuccessful");
         }
     }
 
-    public void updateTask(String id, String title) {
+    public static void updateStatus(String id, String status) {
         try {
-            task.update(id, title);
-            logger.success("Update task successful");
-        } catch (IOException e) {
+            TaskManager.update(id, null, status);
+            Logger.success("Update status task successful");
+        } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Update task unsuccessful");
+            Logger.error("Update status task unsuccessful");
         }
     }
 
-    public void updateStatus(String id, String status) {
+    public static void deleteTask(String id) {
         try {
-            task.updateStatus(id, status);
-            logger.success("Update status task successful");
-        } catch (IOException e) {
+            TaskManager.delete(id);
+            Logger.success("Delete task successful");
+        } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Update status task unsuccessful");
-        }
-    }
-
-    public void deleteTask(String id) {
-        try {
-            task.delete(id);
-            logger.success("Delete task successful");
-        } catch (IOException e) {
-            e.printStackTrace();
-            logger.error("Delete task unsuccessful");
+            Logger.error("Delete task unsuccessful");
         }
     }
 }
